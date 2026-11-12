@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooperation cases — Dragonfly</title>
+<meta name="description" content="Cooperation cases by Dragonfly: product collaborations across aviation and Web3.">
+<link rel="icon" href="data:,">
+<link rel="preload" as="image" href="assets/case-mpchat-dragonfly.webp">
+<style>
+:root{--gold:#c9a36a;--acc:#c8ff4a;--fg:#f3f3f0;--mute:#8d8d88;--bg:#050505;--line:#222;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg);font-family:var(--sans);height:100%;overflow:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono);letter-spacing:.18em;text-transform:uppercase;font-size:10.5px}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:1;touch-action:none}
+.ui{position:fixed;z-index:3;pointer-events:none}
+.ui a,.ui button{pointer-events:auto}
+/* reveal */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.ready .rv{opacity:1;transform:none}
+.ready .rv.d1{transition-delay:.08s}.ready .rv.d2{transition-delay:.16s}.ready .rv.d3{transition-delay:.24s}.ready .rv.d4{transition-delay:.32s}.ready .rv.d5{transition-delay:.4s}
+/* brand column */
+.brand{left:22px;top:20px;display:flex;gap:8px;align-items:flex-start}
+.brand .wm{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:800;font-size:23px;letter-spacing:.02em;line-height:1}
+.brand .wm sup{font-size:9px;font-weight:600;color:var(--acc)}
+.brand .sub{writing-mode:vertical-rl;transform:rotate(180deg);color:var(--mute);font-size:9.5px;letter-spacing:.14em;line-height:1.35}
+/* nav */
+.nav{left:13vw;top:20px}
+.nav .lbl{color:var(--mute);margin-bottom:26px;display:block}
+.nav ul{list-style:none}
+.nav li{font-size:clamp(18px,1.45vw,23px);line-height:1.02;font-weight:500;text-transform:uppercase;letter-spacing:-.005em}
+.nav li a{display:inline-flex;gap:.45em;align-items:baseline;transition:color .3s}
+.nav li a:hover{color:var(--acc)}
+.nav li .ar{display:inline-block;width:0;overflow:hidden;transition:width .4s var(--ease);color:var(--acc)}
+.nav li.on .ar,.nav li a:hover .ar{width:1.1em}
+.nav li.on a{color:var(--fg)}
+.intro{left:13vw;top:calc(20px + 26px + 13.5px + 3 * 1.02 * clamp(18px,1.45vw,23px) + 34px);width:min(300px,22vw)}
+.intro p{font-size:13px;line-height:1.5;color:var(--mute)}
+.intro p b{color:var(--fg);font-weight:500}
+/* top strip */
+.top-c{left:47vw;top:20px;transform:translateX(-50%);text-align:left;line-height:1.5}
+.top-c .k{color:var(--fg)}.top-c .v{color:var(--mute)}
+.top-r{right:22px;top:20px;display:flex;gap:18px;align-items:baseline}
+.top-r .v{color:var(--mute)}
+.top-r a{border-bottom:1px solid var(--fg);padding-bottom:1px;transition:color .3s,border-color .3s}
+.top-r a:hover{color:var(--acc);border-color:var(--acc)}
+/* meta (left, mid) */
+.meta{left:22px;top:41vh;width:calc(47vw - 0.19 * 100vw - 40px);max-width:420px}
+.meta .row{display:grid;grid-template-columns:9vw 1fr;gap:0 10px;margin-bottom:34px}
+.meta .row dt{color:var(--mute)}
+.meta .row dd{font-size:12px;line-height:1.45}
+.meta .swap{transition:opacity .35s ease,transform .45s var(--ease)}
+.meta.out .swap{opacity:0;transform:translateY(8px)}
+/* counter */
+.counter{left:13vw;bottom:9vh;display:flex;align-items:flex-start;gap:14px;mix-blend-mode:difference}
+.counter .lbl{color:var(--fg);margin-top:10px;white-space:nowrap}
+.digits{height:clamp(90px,10vw,150px);overflow:hidden;font-weight:300;font-size:clamp(100px,11.2vw,168px);line-height:clamp(90px,10vw,150px);letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.2px var(--fg)}
+.digits .strip{will-change:transform}
+.digits .strip div{height:clamp(90px,10vw,150px)}
+.counter .tot{margin-top:10px;color:var(--fg)}
+/* captions list (right) */
+.list{right:9vw;top:0;height:100%;width:min(300px,22vw);overflow:hidden;
+  -webkit-mask:linear-gradient(transparent,#000 14%,#000 86%,transparent);mask:linear-gradient(transparent,#000 14%,#000 86%,transparent)}
+.list ol{list-style:none;position:absolute;left:0;right:0;top:50%;will-change:transform}
+.list li{height:var(--ih,170px);margin-top:calc(var(--ih,170px) / -2);position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:9px;cursor:pointer;pointer-events:auto}
+.list .cat{color:var(--mute);min-height:14px;display:flex;align-items:center;gap:8px}
+.list .mark{height:18px;width:auto;display:block}
+.list h3{font-size:clamp(17px,1.35vw,21px);font-weight:500;text-transform:uppercase;letter-spacing:.01em;line-height:1.1}
+.list .dash{width:12px;height:1px;background:currentColor}
+.list p{font-size:12px;line-height:1.45;color:var(--mute);max-width:240px}
+.list li.on h3{color:var(--fg)}
+.list li.on .dash{background:var(--acc)}
+.list li.on p{color:#c9c9c4}
+/* swatches */
+.sw{right:22px;top:50%;transform:translateY(-50%);display:flex;gap:4px}
+.sw i{width:11px;height:11px;display:block;transition:background-color .6s ease}
+/* bottom */
+.scroll{left:22px;bottom:20px;color:var(--mute);display:flex;align-items:center;gap:10px}
+.scroll i{width:26px;height:1px;background:var(--mute);position:relative;overflow:hidden;display:block}
+.scroll i:after{content:"";position:absolute;inset:0;background:var(--acc);transform:translateX(-100%);animation:sl 2.2s var(--ease) infinite}
+@keyframes sl{60%,100%{transform:translateX(100%)}}
+.cta{right:22px;bottom:20px;display:flex;align-items:center;gap:10px}
+.cta a{border-bottom:1px solid var(--fg);padding-bottom:1px;transition:color .3s,border-color .3s}
+.cta a:hover{color:var(--acc);border-color:var(--acc)}
+.cta .tri{width:0;height:0;border-left:8px solid var(--acc);border-top:5px solid transparent;border-bottom:5px solid transparent}
+/* cursor */
+#cur{position:fixed;left:0;top:0;z-index:50;pointer-events:none;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--acc);transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),background-color .3s;display:flex;align-items:center;justify-content:center;mix-blend-mode:normal}
+#cur span{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:#050505;opacity:0;transition:opacity .2s;white-space:nowrap;font-weight:700}
+#cur.big{width:86px;height:86px;margin:-43px 0 0 -43px}
+#cur.big span{opacity:1}
+#cur.soon{background:var(--gold)}
+@media (hover:none){#cur{display:none}}
+/* preloader */
+#pre{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;clip-path:inset(0 0 0 0);transition:clip-path 1.1s cubic-bezier(.77,0,.18,1)}
+#pre.go{clip-path:inset(0 0 100% 0)}
+#pre .n{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--fg)}
+#pre .bar{width:min(240px,50vw);height:1px;background:#1d1d1d;position:relative;overflow:hidden}
+#pre .bar i{position:absolute;inset:0;background:var(--acc);transform-origin:left;transform:scaleX(0)}
+#pre .t{color:var(--mute)}
+/* curtain + detail */
+#curtain{position:fixed;inset:0;z-index:40;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .5s ease}
+#curtain.on{opacity:1;pointer-events:auto}
+#curtain h2{font-size:clamp(34px,5vw,72px);font-weight:500;text-transform:uppercase;letter-spacing:-.01em;color:#4a4a47;overflow:hidden}
+#curtain h2 span{display:inline-block;transform:translateY(105%);transition:transform .8s var(--ease) .1s}
+#curtain.on h2 span{transform:none}
+#detail{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;visibility:hidden;opacity:0;transition:opacity .4s ease,visibility 0s .4s}
+#detail.on{visibility:visible;opacity:1;transition:opacity .4s ease}
+.dt-wrap{max-width:1240px;margin:0 auto;padding:22px 22px 80px}
+.dt-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9vh}
+.dt-top button{background:none;border:0;color:var(--fg);cursor:pointer;font:inherit;display:flex;gap:10px;align-items:center;transition:color .3s}
+.dt-top button:hover{color:var(--acc)}
+.dt-k{color:var(--gold);margin-bottom:18px}
+.dt h1{font-size:clamp(40px,7.2vw,112px);font-weight:500;letter-spacing:-.035em;line-height:.92;text-transform:uppercase}
+.dt h1 em{font-style:normal;color:var(--acc)}
+.dt .lead{font-size:clamp(17px,1.6vw,22px);line-height:1.45;max-width:760px;margin:34px 0 52px;color:#d8d8d3}
+.dt figure{border:1px solid var(--line);background:#0a0a0a;overflow:hidden}
+.dt figure img{display:block;width:100%;height:auto}
+.dt .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:56px 0}
+.dt .grid3 div{background:var(--bg);padding:26px 22px 30px}
+.dt .grid3 h4{font-size:15px;font-weight:500;margin:14px 0 10px}
+.dt .grid3 p{font-size:13px;line-height:1.55;color:var(--mute)}
+.dt .grid3 .mono{color:var(--acc)}
+.dt .path{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 60px}
+.dt .path span{border:1px solid #2c2c2a;padding:9px 13px;font-size:12.5px;border-radius:999px}
+.dt .path span.ar{border:0;padding:9px 2px;color:var(--gold)}
+.dt .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:flex-end;border-top:1px solid var(--line);padding-top:28px}
+.dt .foot p{color:var(--mute);font-size:13px;max-width:420px;line-height:1.5}
+.btn{display:inline-flex;align-items:center;gap:12px;background:var(--acc);color:#050505;padding:15px 22px;font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;transition:background-color .3s,transform .3s var(--ease)}
+.btn:hover{background:#fff;transform:translateY(-2px)}
+/* flat mode (mobile / reduced motion / no WebGL) */
+#flat{display:none}
+html.flat,html.flat body{overflow:auto;height:auto}
+html.flat #gl,html.flat .list,html.flat .counter,html.flat .meta,html.flat .sw,html.flat .scroll,html.flat .top-c,html.flat .intro,html.flat #cur{display:none}
+html.flat .ui{position:absolute}
+html.flat #flat{display:block;padding:250px 20px 40px}
+html.flat .nav{left:104px}
+html.flat .top-r .v{display:none}
+html.flat .cta{position:static;padding:0 20px 34px;justify-content:flex-start}
+#flat .fl-intro{color:var(--mute);font-size:15px;line-height:1.5;margin-bottom:34px;max-width:520px}
+#flat .fl-intro b{color:var(--fg);font-weight:500}
+#flat .track{scroll-padding-left:20px;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -20px;padding:0 20px 8px;scrollbar-width:none}
+#flat .track::-webkit-scrollbar{display:none}
+#flat .card{flex:0 0 86%;scroll-snap-align:start;display:block}
+#flat .card .ph{aspect-ratio:16/9;border:1px solid var(--line);background:#0b0b0a;overflow:hidden;position:relative}
+#flat .card .ph img{width:100%;height:100%;object-fit:cover;display:block}
+#flat .card .ph.soon{display:flex;align-items:flex-end;justify-content:space-between;padding:14px;background:repeating-linear-gradient(90deg,#0b0b0a 0 39px,#151514 39px 40px)}
+#flat .card .ph.soon b{font-size:64px;font-weight:300;color:transparent;-webkit-text-stroke:1px var(--mute);line-height:.8}
+#flat .card .ph.soon span{color:var(--gold)}
+#flat .cap{padding:16px 2px 0;display:flex;flex-direction:column;gap:8px}
+#flat .cap .row1{display:flex;justify-content:space-between;color:var(--mute)}
+#flat .cap h3{font-size:22px;font-weight:500;text-transform:uppercase}
+#flat .cap .dash{width:12px;height:1px;background:var(--acc)}
+#flat .cap p{font-size:13px;color:var(--mute);line-height:1.5}
+#flat .hint{margin-top:22px;color:var(--mute)}
+@media (max-width:820px){
+  .dt .grid3{grid-template-columns:1fr}
+  .dt-top{margin-bottom:6vh}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{transition-duration:.01ms!important;animation:none!important;transition-delay:0s!important}
+}
+</style>
+<script>
+(function(){var m=matchMedia('(max-width: 820px)').matches||matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(!m){try{var c=document.createElement('canvas');if(!(c.getContext('webgl')||c.getContext('experimental-webgl')))m=true}catch(e){m=true}}
+ if(m)document.documentElement.classList.add('flat')})();
+</script>
+</head>
+<body>
+<div id="pre" aria-hidden="true"><span class="t mono">Dragonfly — Cooperation cases</span><div class="bar"><i></i></div><span class="n">000</span></div>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<div class="ui brand rv">
+  <a href="index.html" class="wm" aria-label="Dragonfly home">DRAGONFLY<sup>®</sup></a>
+  <span class="sub mono">cooperation ©2026<br>aviation · web3</span>
+</div>
+
+<nav class="ui nav rv d1" aria-label="Main">
+  <span class="lbl mono">Menu</span>
+  <ul>
+    <li class="on"><a href="cases.html" aria-current="page"><span class="ar">→</span>Cases</a></li>
+    <li><a href="index.html"><span class="ar">→</span>Home</a></li>
+    <li><a href="https://mp.net/" target="_blank" rel="noopener"><span class="ar">→</span>Partner ↗</a></li>
+  </ul>
+</nav>
+
+<div class="ui intro rv d2">
+  <span class="mono" style="color:var(--acc);display:block;margin-bottom:12px">Cooperation cases</span>
+  <p><b>Cooperations that explore the boundaries of product collaboration,</b> reshape the ecosystem value of the aviation industry, and innovate across Web3.</p>
+</div>
+
+<div class="ui top-c mono rv d2"><div class="k">Dragonfly × Partners</div><div class="v">Aviation · Travel · Web3</div></div>
+<div class="ui top-r mono rv d3"><span class="v">Back to</span><a href="index.html">Issuance flow</a></div>
+
+<dl class="ui meta mono rv d3" id="meta"></dl>
+
+<div class="ui counter rv d4" aria-hidden="true">
+  <span class="lbl mono">Selected cooperation</span>
+  <div class="digits"><div class="strip" id="strip"></div></div>
+  <span class="tot mono" id="tot">/03</span>
+</div>
+
+<div class="ui list rv d3" id="list" aria-label="Cooperation cases"><ol id="ol"></ol></div>
+<div class="ui sw rv d4" id="sw" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="ui scroll mono rv d5"><i></i>Scroll</div>
+
+<main id="flat">
+  <p class="fl-intro"><span class="mono" style="color:var(--acc);display:block;margin-bottom:12px">Cooperation cases</span><b>Cooperations that explore the boundaries of product collaboration,</b> reshape the ecosystem value of the aviation industry, and innovate across Web3.</p>
+  <div class="track" id="ftrack"></div>
+  <p class="hint mono">Swipe →</p>
+</main>
+<div class="ui cta mono rv d5"><a href="https://mp.net/" target="_blank" rel="noopener">Visit mp.net</a><span class="tri"></span></div>
+
+<div id="curtain" aria-hidden="true"><h2><span id="ctitle">MPChat x Dragonfly</span></h2></div>
+
+<section id="detail" role="dialog" aria-modal="true" aria-label="MPChat x Dragonfly case" tabindex="-1">
+  <div class="dt-wrap dt">
+    <div class="dt-top mono"><span style="color:var(--mute)">Case 01 / Cooperation</span><button type="button" id="close">Close <span style="font-size:15px">×</span></button></div>
+    <div class="dt-k mono">Aviation × Web3 payments</div>
+    <h1>MPChat <em>x</em><br>Dragonfly</h1>
+    <p class="lead">A bot entry, an embedded flight-booking mini app, stablecoin payment and order notifications come together as one travel-service path inside MPChat.</p>
+    <figure><img src="assets/case-mpchat-dragonfly.webp" alt="MPChat x Dragonfly cooperation visual" width="1800" height="1008" loading="lazy"></figure>
+    <div class="grid3">
+      <div><span class="mono">01 · App entry</span><h4>Inside the chat users already use</h4><p>MPChat hosts the chat, the bot and the mini-app entry, so travel services fit into an existing app journey. Search “Airline” to find the flight bot and start the service.</p></div>
+      <div><span class="mono">02 · Flight service</span><h4>Search, compare, pay in USDT</h4><p>Dragonfly powers the flight-booking scene: route, dates, passengers and cabin in one place; fares shown tax-included in USDT with local times, duration and baggage notes.</p></div>
+      <div><span class="mono">03 · Messages &amp; orders</span><h4>Progress returns to the chat</h4><p>The bot reports payment and ticketing status, with shortcuts to the order, order details and the e-ticket number, plus pre-departure reminders.</p></div>
+    </div>
+    <span class="mono" style="color:var(--mute)">User journey</span>
+    <div class="path"><span>Search the bot</span><span class="ar">→</span><span>Start the assistant</span><span class="ar">→</span><span>Search flights</span><span class="ar">→</span><span>Choose a flight</span><span class="ar">→</span><span>Payment</span><span class="ar">→</span><span>Bot notification</span><span class="ar">→</span><span>Order details</span></div>
+    <div class="foot"><p>More cooperation partners will be added over time.</p><a class="btn" href="https://mp.net/" target="_blank" rel="noopener">Visit mp.net <span>↗</span></a></div>
+  </div>
+</section>
+
+<div id="cur"><span></span></div>
+
+<script>
+(()=>{
+'use strict';
+const FLAT=document.documentElement.classList.contains('flat');
+const IMG='assets/case-mpchat-dragonfly.webp';
+const ITEMS=[
+  {real:true,n:'01',cat:'Aviation × Web3',title:'MPChat x Dragonfly',desc:'More cooperation partners will be added over time.',
+   meta:[['Partner','MPChat'],['Scope','Airline bot entry<br>In-chat flight booking<br>Stablecoin (USDT) payment<br>Order notifications'],['Link','<a href="https://mp.net/" target="_blank" rel="noopener" style="border-bottom:1px solid currentColor">mp.net ↗</a>']],
+   sw:['#c8ff4a','#c9a36a','#3d6bff']},
+  {n:'02',cat:'Next cooperation',title:'Coming soon',desc:'Reserved for the next cooperation partner.',
+   meta:[['Partner','To be announced'],['Scope','—'],['Status','Coming soon']],sw:['#c9a36a','#2a2a28','#f3f3f0']},
+  {n:'03',cat:'Open slot',title:'Your brand here',desc:'Building with Dragonfly? Shape the next case with us.',
+   meta:[['Partner','Open'],['Scope','Aviation · Travel · Web3'],['Status','Open for partnership']],sw:['#8d8d88','#c8ff4a','#121212']}
+];
+const N=ITEMS.length;
+const $=s=>document.querySelector(s);
+
+/* ---------- flat (mobile / reduced motion) ---------- */
+function buildFlat(){
+  const t=$('#ftrack');
+  t.innerHTML=ITEMS.map(it=>`<${it.real?'a href="https://mp.net/" target="_blank" rel="noopener"':'div'} class="card">
+    <div class="ph${it.real?'':' soon'}">${it.real?`<img src="${IMG}" alt="${it.title}" width="1800" height="1008" decoding="async">`:`<b>${it.n}</b><span class="mono">${it.title}</span>`}</div>
+    <div class="cap"><div class="row1 mono"><span>${it.cat}</span><span>${it.n} / ${String(N).padStart(2,'0')}</span></div><h3>${it.title}${it.real?' ↗':''}</h3><span class="dash"></span><p>${it.desc}</p></div>
+  </${it.real?'a':'div'}>`).join('');
+}
+if(FLAT){buildFlat();const pre=$('#pre');document.body.classList.add('ready');pre.remove();return;}
+
+/* ---------- DOM: list, counter, meta ---------- */
+const ol=$('#ol'),strip=$('#strip'),meta=$('#meta'),sw=[...document.querySelectorAll('#sw i')];
+ol.innerHTML=ITEMS.map((it,i)=>`<li data-i="${i}"><span class="cat mono">${it.cat}</span><h3>${it.title}</h3><span class="dash"></span><p>${it.desc}</p></li>`).join('');
+const lis=[...ol.children];
+strip.innerHTML=ITEMS.map(it=>`<div>${it.n}</div>`).join('');
+$('#tot').textContent='/'+String(N).padStart(2,'0');
+function renderMeta(i){meta.innerHTML=ITEMS[i].meta.map(([k,v])=>`<div class="row"><dt>${k}</dt><dd class="swap">${v}</dd></div>`).join('');ITEMS[i].sw.forEach((c,j)=>sw[j].style.backgroundColor=c);}
+renderMeta(0);
+
+/* ---------- WebGL ---------- */
+const cv=$('#gl');
+const gl=cv.getContext('webgl',{antialias:true,alpha:false,premultipliedAlpha:false,powerPreference:'high-performance'});
+const VS=`attribute vec2 aP;uniform mat4 uPV,uM;uniform vec2 uS;uniform float uBend,uWave,uT;varying vec2 vUv;varying float vSh;
+void main(){vec2 q=aP;vec3 p=vec3(q*uS,0.);
+ float cy=q.y+.5;
+ p.z+=uBend*(1.-pow(abs(q.x)*2.,2.))*uS.x*.10;      /* cylinder bulge */
+ p.z+=uBend*cy*cy*uS.y*.28;                          /* page curl toward camera */
+ p.z+=sin(q.y*6.2+uT*2.2+q.x*2.)*uWave*uS.y*.06;     /* motion ripple */
+ p.x+=sin(q.y*3.14+uT)*uWave*uS.x*.02;
+ vUv=vec2(q.x+.5,.5-q.y);vSh=p.z/uS.y;
+ gl_Position=uPV*uM*vec4(p,1.);}`;
+const FS=`precision mediump float;uniform sampler2D uTx;uniform float uA,uDim,uVel;uniform vec4 uCov;varying vec2 vUv;varying float vSh;
+void main(){vec2 uv=uCov.xy+vUv*uCov.zw;
+ vec3 c=vec3(texture2D(uTx,uv+vec2(uVel*.006,0.)).r,texture2D(uTx,uv).g,texture2D(uTx,uv-vec2(uVel*.006,0.)).b);
+ c*=1.-uDim; c*=.92+clamp(vSh,-.3,.3)*.5;
+ gl_FragColor=vec4(mix(vec3(.0196),c,uA),1.);}`;
+function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o}
+const prg=gl.createProgram();gl.attachShader(prg,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prg,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(prg);gl.useProgram(prg);
+const U={};['uPV','uM','uS','uBend','uWave','uT','uTx','uA','uDim','uVel','uCov'].forEach(k=>U[k]=gl.getUniformLocation(prg,k));
+/* grid mesh */
+const SEG=32,verts=[],idx=[];
+for(let y=0;y<=SEG;y++)for(let x=0;x<=SEG;x++)verts.push(x/SEG-.5,y/SEG-.5);
+for(let y=0;y<SEG;y++)for(let x=0;x<SEG;x++){const a=y*(SEG+1)+x,b=a+1,c=a+SEG+1,d=c+1;idx.push(a,c,b,b,c,d)}
+gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(verts),gl.STATIC_DRAW);
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(idx),gl.STATIC_DRAW);
+const aP=gl.getAttribLocation(prg,'aP');gl.enableVertexAttribArray(aP);gl.vertexAttribPointer(aP,2,gl.FLOAT,false,0,0);
+gl.disable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);
+function tex(src){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t}
+/* placeholder card textures drawn in Dragonfly style */
+function placeholder(it,w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');
+  x.fillStyle='#0b0b0a';x.fillRect(0,0,w,h);
+  x.strokeStyle='rgba(243,243,240,.06)';x.lineWidth=1;for(let i=0;i<w;i+=48){x.beginPath();x.moveTo(i+.5,0);x.lineTo(i+.5,h);x.stroke()}
+  for(let j=0;j<h;j+=48){x.beginPath();x.moveTo(0,j+.5);x.lineTo(w,j+.5);x.stroke()}
+  x.strokeStyle='#2a2a2a';x.lineWidth=2;x.strokeRect(1,1,w-2,h-2);
+  const g=x.createRadialGradient(w*.75,h*.3,10,w*.75,h*.3,w*.6);g.addColorStop(0,it.n==='02'?'rgba(201,163,106,.22)':'rgba(200,255,74,.14)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,w,h);
+  const ac=it.n==='02'?'#c9a36a':'#c8ff4a',r=h*.16,cx0=w*.5,cy0=h*.56;x.strokeStyle='rgba(243,243,240,.35)';x.lineWidth=1.5;
+  x.beginPath();x.arc(cx0,cy0,r,0,Math.PI*2);x.stroke();x.setLineDash([6,8]);x.beginPath();x.arc(cx0,cy0,r*1.6,0,Math.PI*2);x.stroke();x.setLineDash([]);
+  x.strokeStyle=ac;x.lineWidth=2;x.beginPath();x.moveTo(cx0-r*.45,cy0);x.lineTo(cx0+r*.45,cy0);x.moveTo(cx0,cy0-r*.45);x.lineTo(cx0,cy0+r*.45);x.stroke();
+  x.textBaseline='alphabetic';
+  x.font='600 '+Math.round(h*.034)+'px ui-monospace,Menlo,monospace';x.fillStyle=it.n==='02'?'#c9a36a':'#c8ff4a';
+  const tx=it.title.toUpperCase().split('').join(String.fromCharCode(8202));x.fillText(tx,w*.05,h*.12);
+  x.fillStyle='#8d8d88';x.fillText('DRAGONFLY — COOPERATION '+it.n,w*.05,h*.12+h*.06);
+  x.textAlign='right';x.fillText('→',w*.95,h*.12);x.fillStyle='#8d8d88';x.fillText(it.n+' / 0'+N,w*.95,h*.93);x.textAlign='left';x.fillText('MORE PARTNERS OVER TIME',w*.05,h*.93);return c}
+const ASPECT=1800/1008;
+const planes=ITEMS.map(it=>({it,tx:null,iw:16,ih:9,hov:0}));
+let loaded=0;
+planes.forEach((p,i)=>{ if(!p.it.real){const c=placeholder(p.it,1280,Math.round(1280/ASPECT));p.tx=tex(c);p.iw=c.width;p.ih=c.height;loaded++;}});
+const img=new Image();img.decoding='async';
+const imgReady=new Promise(res=>{img.onload=()=>{planes[0].tx=tex(img);planes[0].iw=img.naturalWidth;planes[0].ih=img.naturalHeight;loaded++;res()};img.onerror=()=>{const c=placeholder({n:'01',title:'MPChat x Dragonfly'},1280,717);planes[0].tx=tex(c);loaded++;res()}});
+img.src=IMG;
+
+/* math */
+const D2R=Math.PI/180;
+function persp(f,a,n,fa){const t=1/Math.tan(f/2);return[t/a,0,0,0,0,t,0,0,0,0,(fa+n)/(n-fa),-1,0,0,2*fa*n/(n-fa),0]}
+function mul(a,b){const o=new Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++){let s=0;for(let k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s}return o}
+function model(x,y,z,rx,ry,rz,s){const cx=Math.cos(rx),sx=Math.sin(rx),cy=Math.cos(ry),sy=Math.sin(ry),cz=Math.cos(rz),sz=Math.sin(rz);
+  const Rx=[1,0,0,0,0,cx,sx,0,0,-sx,cx,0,0,0,0,1],Ry=[cy,0,-sy,0,0,1,0,0,sy,0,cy,0,0,0,0,1],Rz=[cz,sz,0,0,-sz,cz,0,0,0,0,1,0,0,0,0,1];
+  let m=mul(Rz,mul(Ry,Rx));m=m.map((v,i)=>i<12&&i%4<3?v*s:v);m[12]=x;m[13]=y;m[14]=z;return m}
+/* trajectory keyframes along the stream (d = item index - progress); units: card w / h */
+const K=[ // d,  x,    y,    z,   rx,  ry,  rz,  s,   bend, dim
+ [-3, .64, 2.15,-260, 30, -24, -7, .80, .55,.75],
+ [-2, .52, 1.62,-180, 26, -20, -6, .86, .45,.6],
+ [-1, .42, 1.14,-100, 20, -15, -5, .92, .34,.45],
+ [ 0, 0,   0,     0,   0,   0,  0,  1,   0,  0],
+ [ 1,-.30,-0.98, -60,-30,  10,  7, .96,.30,.06],
+ [ 2,-.36,-1.16,-130,-42,  14,  9, .93,.38,.16],
+ [ 3,-.40,-1.30,-200,-50,  17, 11, .90,.45,.28],
+ [ 4,-.43,-1.40,-270,-55,  19, 12, .88,.5,.4]];
+function along(d){d=Math.max(-3,Math.min(4,d));let i=0;while(i<K.length-2&&d>K[i+1][0])i++;const a=K[i],b=K[i+1],t=(d-a[0])/(b[0]-a[0]),e=t*t*(3-2*t),m=t*.35+e*.65;
+  return a.map((v,j)=>v+(b[j]-v)*m)}
+
+let W=0,H=0,DPR=1,PV,cw=0,chh=0,CX=0,CY=0;
+function resize(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;gl.viewport(0,0,cv.width,cv.height);
+  const f=36*D2R,dist=(H/2)/Math.tan(f/2);PV=mul(persp(f,W/H,10,dist*4),[1,0,0,0,0,1,0,0,0,0,1,0,0,0,-dist,1]);
+  cw=Math.min(W*.37,H*.58*ASPECT,640);chh=cw/ASPECT;CX=W*.47-W/2;CY=0;
+  const ih=Math.max(140,Math.min(190,H*.2));document.documentElement.style.setProperty('--ih',ih+'px');ITEMH=ih;}
+let ITEMH=170;addEventListener('resize',resize);resize();
+
+/* input */
+let target=0,prog=N-1+1.6,prev=prog,vel=0,lock=0,acc=0,drag=null,mx=-1e4,my=-1e4,nmx=0,nmy=0,active=0,openLock=false;
+const clampT=v=>Math.max(0,Math.min(N-1,v));
+addEventListener('wheel',e=>{if(openLock)return;e.preventDefault();acc+=e.deltaY;const now=performance.now();
+  if(Math.abs(acc)>40&&now>lock){target=clampT(Math.round(target)+Math.sign(acc));acc=0;lock=now+620}},{passive:false});
+addEventListener('keydown',e=>{if(openLock){if(e.key==='Escape')closeCase();return}
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){target=clampT(Math.round(target)+1);e.preventDefault()}
+  if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){target=clampT(Math.round(target)-1);e.preventDefault()}
+  if(e.key==='Enter'&&document.activeElement===document.body)openCase(Math.round(prog))});
+cv.addEventListener('pointerdown',e=>{drag={y:e.clientY,x:e.clientX,t0:target,moved:0};cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',e=>{if(!drag)return;const dy=e.clientY-drag.y;drag.moved=Math.max(drag.moved,Math.abs(dy)+Math.abs(e.clientX-drag.x));target=Math.max(-.35,Math.min(N-1+.35,drag.t0-dy/(chh*1.1)))});
+cv.addEventListener('pointerup',e=>{if(!drag)return;const moved=drag.moved,dy=e.clientY-drag.y;
+  if(moved<6){ if(hoverHit())openCase(active); }
+  else target=clampT(Math.abs(dy)>30?Math.round(drag.t0)-Math.sign(dy):Math.round(target));
+  drag=null});
+lis.forEach(li=>li.addEventListener('click',()=>{const i=+li.dataset.i;if(i===active&&Math.abs(prog-i)<.1)openCase(i);else target=i}));
+addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;nmx=mx/W*2-1;nmy=my/H*2-1});
+document.addEventListener('pointerleave',()=>{mx=my=-1e4});
+
+function hoverHit(){if(Math.abs(prog-Math.round(prog))>.12)return false;const sx=W/2+CX,sy=H/2-CY;return Math.abs(mx-sx)<cw/2&&Math.abs(my-sy)<chh/2}
+
+/* cursor */
+const cur=$('#cur'),curT=cur.querySelector('span');let cxp=W/2,cyp=H/2;
+
+/* open / close case */
+const curtain=$('#curtain'),detail=$('#detail');
+function openCase(i){ if(openLock)return; const it=ITEMS[i]; if(!it.real){target=clampT(i+ (i<N-1?1:-1));return}
+  openLock=true;curtain.classList.add('on');
+  setTimeout(()=>{detail.classList.add('on');detail.scrollTop=0;detail.focus({preventScroll:true});curtain.classList.remove('on');history.replaceState(null,'','#mpchat-x-dragonfly')},1150)}
+function closeCase(){detail.classList.remove('on');openLock=false;history.replaceState(null,'',location.pathname)}
+$('#close').addEventListener('click',closeCase);
+
+/* frame */
+let last=performance.now(),T=0,lastActive=-1;
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;
+  if(!openLock){
+  const k=1-Math.pow(1-(drag?.25:.075),dt*60);prev=prog;prog+=(target-prog)*k;vel+=((prog-prev)/(dt||.016)*.016-vel)*.25;
+  const ia=Math.round(Math.max(0,Math.min(N-1,prog)));
+  if(ia!==lastActive){active=ia;lis.forEach((l,j)=>l.classList.toggle('on',j===ia));
+    if(lastActive>=0){meta.classList.add('out');setTimeout(()=>{renderMeta(ia);meta.classList.remove('out')},300)}lastActive=ia}
+  /* sync DOM */
+  ol.style.transform=`translateY(${-prog*ITEMH}px)`;
+  lis.forEach((l,j)=>{const d=Math.abs(j-prog);l.style.top=(j*ITEMH)+'px';l.style.opacity=(1-Math.min(1,d)*.78).toFixed(3)});
+  strip.style.transform=`translateY(${-Math.max(0,Math.min(N-1,prog))*strip.firstElementChild.offsetHeight}px)`;
+  /* hover */
+  const hov=hoverHit()&&!drag;const real=ITEMS[active].real;
+  cur.classList.toggle('big',hov);cur.classList.toggle('soon',hov&&!real);curT.textContent=real?'VIEW CASE':'SOON';
+  cv.style.cursor=hov?'none':(drag?'grabbing':'grab');document.body.style.cursor='';
+  planes.forEach((p,j)=>p.hov+=(((j===active&&hov)?1:0)-p.hov)*Math.min(1,dt*7));
+  }
+  cxp+=(mx-cxp)*Math.min(1,dt*18);cyp+=(my-cyp)*Math.min(1,dt*18);cur.style.transform=`translate(${cxp}px,${cyp}px)`;
+  /* draw */
+  gl.clearColor(.0196,.0196,.0196,1);gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.uniformMatrix4fv(U.uPV,false,new Float32Array(PV));gl.uniform1f(U.uT,T);
+  const order=planes.map((p,j)=>({p,j,d:j-prog})).filter(o=>o.d>-3.2&&o.d<4.2&&o.p.tx).sort((a,b)=>along(b.d)[3]===along(a.d)[3]?0:along(a.d)[3]-along(b.d)[3]);
+  for(const o of order){const p=o.p,q=along(o.d),h=p.hov;
+    const x=CX+q[1]*cw,y=CY+q[2]*chh,z=q[3]+h*30;
+    const rx=(q[4]+nmy*6*h)*D2R,ry=(q[5]+nmx*8*h)*D2R,rz=q[6]*D2R,s=q[7]*(1+.035*h);
+    const idle=Math.sin(T*.9+o.j*1.7)*.05*Math.min(1,Math.abs(o.d));
+    const bend=(q[8]+idle+Math.min(.6,Math.abs(vel)*2.2))*(1-h);
+    gl.uniformMatrix4fv(U.uM,false,new Float32Array(model(x,y,z,rx,ry,rz,s)));
+    gl.uniform2f(U.uS,cw,chh);gl.uniform1f(U.uBend,bend);gl.uniform1f(U.uWave,Math.min(1,Math.abs(vel)*3));
+    gl.uniform1f(U.uDim,q[9]);gl.uniform1f(U.uVel,Math.max(-1,Math.min(1,vel*4)));
+    const fade=o.d<-2.4?Math.max(0,1-(-o.d-2.4)/.8):(o.d>3.2?Math.max(0,1-(o.d-3.2)):1);gl.uniform1f(U.uA,fade);
+    /* cover-fit texture to card */
+    const ta=p.iw/p.ih;let sx=1,sy=1;if(ta>ASPECT)sx=ASPECT/ta;else sy=ta/ASPECT;gl.uniform4f(U.uCov,(1-sx)/2,(1-sy)/2,sx,sy);
+    gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,p.tx);gl.uniform1i(U.uTx,0);
+    gl.drawElements(gl.TRIANGLES,idx.length,gl.UNSIGNED_SHORT,0)}
+  requestAnimationFrame(frame)}
+
+/* preloader */
+const pre=$('#pre'),pn=pre.querySelector('.n'),pb=pre.querySelector('.bar i');const t0=performance.now();let shown=0;
+function preTick(now){const minT=Math.min(1,(now-t0)/1300);const real=loaded/N;const v=Math.min(minT,real*.999+(real>=1?.001:0));shown+=(v-shown)*.2;
+  pn.textContent=String(Math.round(shown*100)).padStart(3,'0');pb.style.transform=`scaleX(${shown})`;
+  if(shown>.995&&loaded>=N){pn.textContent='100';pre.classList.add('go');document.body.classList.add('ready');setTimeout(()=>pre.remove(),1200);return}
+  requestAnimationFrame(preTick)}
+requestAnimationFrame(preTick);requestAnimationFrame(frame);
+if(location.hash==='#mpchat-x-dragonfly')imgReady.then(()=>setTimeout(()=>openCase(0),1400));
+})();
+</script>
+</body>
+</html>

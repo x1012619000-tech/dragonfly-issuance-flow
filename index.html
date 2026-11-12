@@ -13,6 +13,8 @@ body{padding:16px 18px 18px;min-height:100vh;display:flex}
 .stage{max-width:1440px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:12px;min-height:calc(100vh - 32px)}
 .kicker{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.2em;color:var(--mute);font-family:ui-monospace,Menlo,monospace;flex:none}
 .kicker b{color:#fff;font-weight:600}
+.kicker .kcase{margin-left:2.2em;color:var(--fg);text-decoration:none;letter-spacing:.2em;transition:color .25s}
+.kicker .kcase:hover,.kicker .kcase:focus-visible{color:var(--acc)}
 
 .top{
   display:grid;
@@ -421,7 +423,7 @@ body{padding:16px 18px 18px;min-height:100vh;display:flex}
 </div>
 
 <div class="stage">
-  <div class="kicker"><span>DRAGONFLY → ISSUED → ON-CHAIN</span><span><b>TOP MARKET · BOTTOM PAYMENTS</b></span></div>
+  <div class="kicker"><span>DRAGONFLY → ISSUED → ON-CHAIN</span><span><b>TOP MARKET · BOTTOM PAYMENTS</b><a class="kcase" href="cases.html">CASES →</a></span></div>
 
   <div class="top">
     <section class="box dfly" aria-label="Dragonfly flight visualization">
