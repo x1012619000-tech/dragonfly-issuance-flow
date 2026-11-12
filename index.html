@@ -220,6 +220,14 @@ body{padding:16px 18px 18px;min-height:100vh;display:flex}
   width:5px;height:5px;border-radius:50%;background:var(--gold);flex:none;
 }
 .pay-chip.accent .dot{background:var(--acc);box-shadow:0 0 6px rgba(200,255,74,.55)}
+.pay-more{margin-left:auto;display:inline-flex;align-items:center;gap:.9em;font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:1;letter-spacing:.2em;text-transform:uppercase;color:var(--fg);text-decoration:none;padding:5px 2px;white-space:nowrap;transition:color .25s}
+.pay-more b{color:var(--acc);font-weight:700;letter-spacing:.24em;text-shadow:0 0 4px rgba(200,255,74,.9),0 0 12px rgba(200,255,74,.55),0 0 24px rgba(200,255,74,.3);animation:pmNeon 2.4s ease-in-out infinite}
+.pay-more:hover,.pay-more:focus-visible{color:var(--acc)}
+.pay-more:hover b{animation-duration:1.2s}
+@keyframes pmNeon{0%,100%{opacity:1;text-shadow:0 0 4px rgba(200,255,74,.9),0 0 12px rgba(200,255,74,.6),0 0 26px rgba(200,255,74,.35)}
+ 45%{opacity:.55;text-shadow:0 0 2px rgba(200,255,74,.35),0 0 4px rgba(200,255,74,.15)}
+ 52%{opacity:1}56%{opacity:.7}60%{opacity:1;text-shadow:0 0 5px rgba(200,255,74,1),0 0 14px rgba(200,255,74,.7),0 0 30px rgba(200,255,74,.4)}}
+@media (prefers-reduced-motion:reduce){.pay-more b{animation:none}}
 .pay-mid{
   flex:1;min-height:0;
   display:grid;grid-template-columns:1.1fr 1.6fr;gap:10px;
@@ -456,6 +464,7 @@ body{padding:16px 18px 18px;min-height:100vh;display:flex}
         <span class="pay-chip accent"><span class="dot"></span>USDD</span>
         <span class="pay-chip accent"><span class="dot"></span>Binance Pay</span>
         <span class="pay-chip"><span class="dot"></span>MULTI-CURRENCY</span>
+        <a class="pay-more" href="cases.html" aria-label="What's more: Cooperation cases">What's more →<b>CASES</b></a>
       </div>
       <div class="pay-mid">
         <div class="pay-pillars">
